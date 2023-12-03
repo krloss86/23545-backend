@@ -16,7 +16,7 @@ public class AdministradorDeConexiones {
 		String port = "33060";
 		String dbName = "DB-23545";
 		
-		String dbUrl = "jdbc:mysql://"+host+":"+port+"/"+dbName + "?serverTimeZone=UTC&useSSL=false";
+		String dbUrl = "jdbc:mysql://"+host+":"+port+"/"+dbName + "?allowPublicKeyRetrieval=true&serverTimeZone=UTC&useSSL=false";
 		
 		String driver = "com.mysql.cj.jdbc.Driver";
 		
