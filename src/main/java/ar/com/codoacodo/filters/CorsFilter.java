@@ -27,6 +27,7 @@ public class CorsFilter implements Filter{
 		
 		if(origenesPermitidos.contains(origin)) {
 			((HttpServletResponse)response).addHeader("Access-Control-Allow-Origin", origin);
+			((HttpServletResponse)response).addHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
 		}
 		
 		chain.doFilter(request, response);
