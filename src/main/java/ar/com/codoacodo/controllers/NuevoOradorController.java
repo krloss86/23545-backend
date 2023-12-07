@@ -83,8 +83,37 @@ public class NuevoOradorController extends HttpServlet{
 		resp.setStatus(HttpServletResponse.SC_OK);
 	}
 	
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPut(
+			HttpServletRequest request, 
+			HttpServletResponse response) throws ServletException, IOException {
 		
-		super.doPut(req, resp);
+		//capturar el id que viene en la url ?id=1
+		String id = request.getParameter("id");//f8
+		
+		//captura los datos nuevos del orador
+		//obtengo el json desde el frontend
+		String json = request.getReader()
+				.lines()
+				.collect(Collectors.joining(System.lineSeparator()));//spring
+		
+		//convierto de json String a Objecto java usando libreria de jackson2
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+		OradorRequest oradorRequest = mapper.readValue(json, OradorRequest.class);
+		
+		//busco el orador en la db
+		Orador orador = repository.getById(Long.parseLong(id));
+		
+		//actualizo los datos del orado con los nuevo que viene en el OradorRequest 	
+		orador.setNombre(oradorRequest.getNombre());
+		orador.setApellido(oradorRequest.getApellido()); 
+		orador.setMail(oradorRequest.getMail()); 
+		orador.setTema(oradorRequest.getTema()); 
+
+		//ahora si actualizo en la db
+		repository.update(orador);
+		
+		response.setStatus(HttpServletResponse.SC_OK);
 	}
 }
